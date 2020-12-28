@@ -1,1 +1,1 @@
-# Extracting-Sales-Information
+we will use a combination of simple SELECT statements, as well as aggregate and window functions, to examine the sales data. With the preliminary information at hand, we can use it to extract the Bat Scooter sales records and discover what is actually going on. We have a table, product_names, that contains both the model names and product IDs. We will need to combine this information with the sales records and extract only those for the Bat Scooter.
