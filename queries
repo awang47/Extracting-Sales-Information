@@ -1,0 +1,50 @@
+#Inner join on the product_id columns of both the product_names table and the sales table. 
+
+SELECT model, customer_id, sales_transaction_date, sales_amount,
+       channel, dealership_id INTO products_sales FROM sales INNER JOIN 
+       product_names ON sales.product_id=product_names.product_id
+       
+       
+SELECT * FROM products_sales LIMIT 5
+
+
+#The product_sales table has information available for the Bat Scooter. I am going to order the sales information by sales_transaction_date in ascending order. 
+By wrangling the data this way, I can look at the first few days of the sales records in detail.
+
+SELECT * FROM products_sales WHERE model='Bat' ORDER BY sales_transaction_date
+
+#Here I am going to count the number of records available:
+
+SELECT COUNT(model) FROM products_sales WHERE model='Bat'
+(7328 sales, beginning October 10, 2016)
+
+#Now I am going to determine the last sale date for the Bat Scooter:
+
+SELECT MAX(sales_transaction_date) FROM products_sales WHERE
+      model='Bat';
+(The last sale in the database occurred on May 31, 2019)
+
+#Here I am collecting daily sales volume for the Bat Scooter and place it in a new table called bat_sales to confirm the information provided by the sales team stating that sales dropped by 20% after the first 2 weeks:
+SELECT * INTO bat_sales FROM products_sales WHERE model='Bat'
+      ORDER BY sales_transaction_date
+
+#Now removing the time information to allow tracking of sales by date. 
+We don't need to know the time at which each sale occurred. 
+      sqlda=# UPDATE bat_sales SET sales_transaction_date=DATE(sales_transaction_date)
+      
+#Create a new table containing the sales transaction dates and a daily count of total sales
+ SELECT sales_transaction_date, COUNT(sales_transaction_date) INTO
+      bat_sales_daily FROM bat_sales GROUP BY sales_transaction_date ORDER BY
+      sales_transaction_date
+ 
+#We aregoing to look at 3 weeks records as sales were reported to have dropped after approximately the first 2 weeks:
+
+      sqlda=# SELECT * FROM bat_sales_daily LIMIT 22
+      
+(There is a drop in sales after October 20, as the sales drop to singled-digit sales volumne over the next 11 days)
+
+
+
+
+
+
